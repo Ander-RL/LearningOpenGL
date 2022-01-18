@@ -5,6 +5,8 @@
 #include <string>
 #include <sstream>
 
+#include <Shader.h>
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
@@ -60,42 +62,7 @@ int main(void)
     // build and compile our shader program
     // ------------------------------------
     // vertex shader
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-    // check for shader compile errors
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    // fragment shader
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-    // check for shader compile errors
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-    // link shaders
-    unsigned int shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    // check for linking errors
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-    }
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    Shader ourShader("/shaders/vertex_shader.txt", "/shaders/fragment_shader.txt");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
@@ -153,8 +120,8 @@ int main(void)
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // background color
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // active shader so uniform can work
-        glUseProgram(shaderProgram);
+        // activate shader so uniform can work
+        ourShader.use();
 
         // filling the uniform so the fragment shader can use it
         // changes color over time
@@ -162,7 +129,7 @@ int main(void)
         float redValue = (sin(timeValue) / 2.8f) + 0.5f;
         float greenValue = (sin(timeValue) / 1.2f) + 0.5f;
         float blueValue = (cos(timeValue) / 2.5f) + 0.5f;
-        int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+        int vertexColorLocation = glGetUniformLocation(ourShader.ID, "ourColor");
         glUniform4f(vertexColorLocation, redValue, greenValue, blueValue, 1.0f); // (location, R, G, B, A)
 
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
@@ -180,7 +147,7 @@ int main(void)
     // ------------------------------------------------------------------------
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
+    glDeleteProgram(ourShader.ID);
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
