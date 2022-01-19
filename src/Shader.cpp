@@ -10,8 +10,8 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 	std::string vertexCode;
 	std::string fragmentCode;
 
-	std::ifstream vShaderFile("shaders/vertex_shader.txt");
-	std::ifstream fShaderFile("shaders/fragment_shader.txt");
+	std::ifstream vShaderFile(vertexPath);
+	std::ifstream fShaderFile(fragmentPath);
 	std::stringstream stream[2];
 
 	if (vShaderFile.is_open())
