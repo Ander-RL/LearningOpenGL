@@ -122,8 +122,41 @@ int main(void)
     stbi_image_free(data);
 
 
+    // second texture
+    unsigned int texture2;
+    glGenTextures(1, &texture2);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+    // set the texture wrapping/filtering options (on the currently bound texture object)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // tell stb_image.h to flip loaded texture's on the y-axis.
+    stbi_set_flip_vertically_on_load(true); 
+
+    // load and generate the texture
+    data = stbi_load("textures/awesomeface.png", &width, &height, &nrChannels, 0);
+
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture2" << std::endl;
+    }
+    stbi_image_free(data);
+
+
     // uncomment this call to draw in wireframe polygons.
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    // activate shader so uniform can work
+    ourShader.use();
+    glUniform1i(glGetUniformLocation(ourShader.ID, "ourTexture"), 0); // set it manually
+    ourShader.setInt("ourTexture2", 1); // or with shader class
 
     // render loop
     // -----------
@@ -139,10 +172,10 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         // bind Texture
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
-
-        // activate shader so uniform can work
-        ourShader.use();
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture2);
 
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
