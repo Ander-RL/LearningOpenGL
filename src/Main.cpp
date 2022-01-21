@@ -1,6 +1,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <stb_image.h>
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
 #include <iostream>
 #include <fstream>
@@ -13,6 +16,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
 float opacity = 0.0f;
+float rotation = 0.0f;
 
 int main(void)
 {
@@ -184,6 +188,17 @@ int main(void)
         // set the texture opacity value in the shader
         ourShader.setFloat("opacity", opacity);
 
+
+        // rotating texture
+        // create transformations
+        glm::mat4 trans = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        trans = glm::rotate(trans, glm::radians(rotation), glm::vec3(0.0, 0.0, 1.0));
+
+        // get matrix's uniform location and set matrix
+        ourShader.use();
+        unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -223,7 +238,19 @@ void processInput(GLFWwindow* window)
         opacity -= 0.01f;
         if (opacity < 0.0f)
             opacity = 0.0f;
-}
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+        rotation += 1.0f;
+        if (rotation > 360.0f)
+            rotation = 0.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+        rotation -= 1.0f;
+        if (rotation < 0.0f)
+            rotation = 360.0f;
+    }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes

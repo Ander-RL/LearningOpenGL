@@ -92,13 +92,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
-      <AdditionalIncludeDirectories>src;vendor\GLEW\include;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\GLEW\include;vendor\GLFW\include;vendor\GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>vendor\GLEW\lib\Release\x64;vendor\GLFW\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>vendor\GLEW\lib;vendor\GLFW\lib;vendor\GLM</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -110,7 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
-      <AdditionalIncludeDirectories>src;vendor\GLEW\include;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\GLEW\include;vendor\GLFW\include;vendor\GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -118,7 +118,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>vendor\GLEW\lib\Release\x64;vendor\GLFW\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>vendor\GLEW\lib;vendor\GLFW\lib;vendor\GLM</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -128,13 +128,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
-      <AdditionalIncludeDirectories>src;vendor\GLEW\include;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\GLEW\include;vendor\GLFW\include;vendor\GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>vendor\GLEW\lib\Release\x64;vendor\GLFW\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>vendor\GLEW\lib;vendor\GLFW\lib;vendor\GLM</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -146,7 +146,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
-      <AdditionalIncludeDirectories>src;vendor\GLEW\include;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\GLEW\include;vendor\GLFW\include;vendor\GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -154,26 +154,458 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>vendor\GLEW\lib\Release\x64;vendor\GLFW\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>vendor\GLEW\lib;vendor\GLFW\lib;vendor\GLM</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="vendor\GLM\detail\glm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\stb_image.h" />
+    <ClInclude Include="vendor\GLEW\include\GL\eglew.h" />
+    <ClInclude Include="vendor\GLEW\include\GL\glew.h" />
+    <ClInclude Include="vendor\GLEW\include\GL\glxew.h" />
+    <ClInclude Include="vendor\GLEW\include\GL\wglew.h" />
+    <ClInclude Include="vendor\GLFW\include\GLFW\glfw3.h" />
+    <ClInclude Include="vendor\GLFW\include\GLFW\glfw3native.h" />
+    <ClInclude Include="vendor\GLM\common.hpp" />
+    <ClInclude Include="vendor\GLM\detail\compute_common.hpp" />
+    <ClInclude Include="vendor\GLM\detail\compute_vector_relational.hpp" />
+    <ClInclude Include="vendor\GLM\detail\qualifier.hpp" />
+    <ClInclude Include="vendor\GLM\detail\setup.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_float.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_half.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_mat2x2.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_mat2x3.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_mat2x4.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_mat3x2.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_mat3x3.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_mat3x4.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_mat4x2.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_mat4x3.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_mat4x4.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_quat.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_vec1.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_vec2.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_vec3.hpp" />
+    <ClInclude Include="vendor\GLM\detail\type_vec4.hpp" />
+    <ClInclude Include="vendor\GLM\detail\_features.hpp" />
+    <ClInclude Include="vendor\GLM\detail\_fixes.hpp" />
+    <ClInclude Include="vendor\GLM\detail\_noise.hpp" />
+    <ClInclude Include="vendor\GLM\detail\_swizzle.hpp" />
+    <ClInclude Include="vendor\GLM\detail\_swizzle_func.hpp" />
+    <ClInclude Include="vendor\GLM\detail\_vectorize.hpp" />
+    <ClInclude Include="vendor\GLM\exponential.hpp" />
+    <ClInclude Include="vendor\GLM\ext.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_clip_space.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_common.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double2x2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double2x2_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double2x3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double2x3_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double2x4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double2x4_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double3x2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double3x2_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double3x3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double3x3_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double3x4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double3x4_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double4x2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double4x2_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double4x3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double4x3_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double4x4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_double4x4_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float2x2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float2x2_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float2x3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float2x3_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float2x4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float2x4_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float3x2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float3x2_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float3x3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float3x3_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float3x4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float3x4_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float4x2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float4x2_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float4x3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float4x3_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float4x4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_float4x4_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int2x2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int2x2_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int2x3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int2x3_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int2x4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int2x4_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int3x2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int3x2_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int3x3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int3x3_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int3x4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int3x4_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int4x2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int4x2_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int4x3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int4x3_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int4x4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_int4x4_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_projection.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_relational.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_transform.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint2x2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint2x2_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint2x3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint2x3_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint2x4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint2x4_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint3x2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint3x2_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint3x3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint3x3_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint3x4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint3x4_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint4x2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint4x2_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint4x3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint4x3_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint4x4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\matrix_uint4x4_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\quaternion_common.hpp" />
+    <ClInclude Include="vendor\GLM\ext\quaternion_double.hpp" />
+    <ClInclude Include="vendor\GLM\ext\quaternion_double_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\quaternion_exponential.hpp" />
+    <ClInclude Include="vendor\GLM\ext\quaternion_float.hpp" />
+    <ClInclude Include="vendor\GLM\ext\quaternion_float_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\quaternion_geometric.hpp" />
+    <ClInclude Include="vendor\GLM\ext\quaternion_relational.hpp" />
+    <ClInclude Include="vendor\GLM\ext\quaternion_transform.hpp" />
+    <ClInclude Include="vendor\GLM\ext\quaternion_trigonometric.hpp" />
+    <ClInclude Include="vendor\GLM\ext\scalar_common.hpp" />
+    <ClInclude Include="vendor\GLM\ext\scalar_constants.hpp" />
+    <ClInclude Include="vendor\GLM\ext\scalar_integer.hpp" />
+    <ClInclude Include="vendor\GLM\ext\scalar_int_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\scalar_packing.hpp" />
+    <ClInclude Include="vendor\GLM\ext\scalar_relational.hpp" />
+    <ClInclude Include="vendor\GLM\ext\scalar_uint_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\scalar_ulp.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_bool1.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_bool1_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_bool2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_bool2_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_bool3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_bool3_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_bool4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_bool4_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_common.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_double1.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_double1_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_double2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_double2_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_double3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_double3_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_double4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_double4_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_float1.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_float1_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_float2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_float2_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_float3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_float3_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_float4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_float4_precision.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_int1.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_int1_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_int2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_int2_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_int3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_int3_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_int4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_int4_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_integer.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_packing.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_relational.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_uint1.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_uint1_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_uint2.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_uint2_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_uint3.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_uint3_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_uint4.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_uint4_sized.hpp" />
+    <ClInclude Include="vendor\GLM\ext\vector_ulp.hpp" />
+    <ClInclude Include="vendor\GLM\fwd.hpp" />
+    <ClInclude Include="vendor\GLM\geometric.hpp" />
+    <ClInclude Include="vendor\GLM\glm.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\bitfield.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\color_space.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\constants.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\epsilon.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\integer.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\matrix_access.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\matrix_integer.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\matrix_inverse.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\matrix_transform.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\noise.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\packing.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\quaternion.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\random.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\reciprocal.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\round.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\type_aligned.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\type_precision.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\type_ptr.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\ulp.hpp" />
+    <ClInclude Include="vendor\GLM\gtc\vec1.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\associated_min_max.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\bit.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\closest_point.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\color_encoding.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\color_space.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\color_space_YCoCg.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\common.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\compatibility.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\component_wise.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\dual_quaternion.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\easing.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\euler_angles.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\extend.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\extended_min_max.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\exterior_product.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\fast_exponential.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\fast_square_root.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\fast_trigonometry.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\functions.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\gradient_paint.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\handed_coordinate_space.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\hash.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\integer.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\intersect.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\io.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\log_base.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\matrix_cross_product.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\matrix_decompose.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\matrix_factorisation.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\matrix_interpolation.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\matrix_major_storage.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\matrix_operation.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\matrix_query.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\matrix_transform_2d.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\mixed_product.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\norm.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\normal.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\normalize_dot.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\number_precision.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\optimum_pow.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\orthonormalize.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\perpendicular.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\polar_coordinates.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\projection.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\quaternion.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\range.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\raw_data.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\rotate_normalized_axis.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\rotate_vector.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\scalar_multiplication.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\scalar_relational.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\spline.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\std_based_type.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\string_cast.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\texture.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\transform.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\transform2.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\type_aligned.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\type_trait.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\vector_angle.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\vector_query.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\vec_swizzle.hpp" />
+    <ClInclude Include="vendor\GLM\gtx\wrap.hpp" />
+    <ClInclude Include="vendor\GLM\integer.hpp" />
+    <ClInclude Include="vendor\GLM\mat2x2.hpp" />
+    <ClInclude Include="vendor\GLM\mat2x3.hpp" />
+    <ClInclude Include="vendor\GLM\mat2x4.hpp" />
+    <ClInclude Include="vendor\GLM\mat3x2.hpp" />
+    <ClInclude Include="vendor\GLM\mat3x3.hpp" />
+    <ClInclude Include="vendor\GLM\mat3x4.hpp" />
+    <ClInclude Include="vendor\GLM\mat4x2.hpp" />
+    <ClInclude Include="vendor\GLM\mat4x3.hpp" />
+    <ClInclude Include="vendor\GLM\mat4x4.hpp" />
+    <ClInclude Include="vendor\GLM\matrix.hpp" />
+    <ClInclude Include="vendor\GLM\packing.hpp" />
+    <ClInclude Include="vendor\GLM\simd\common.h" />
+    <ClInclude Include="vendor\GLM\simd\exponential.h" />
+    <ClInclude Include="vendor\GLM\simd\geometric.h" />
+    <ClInclude Include="vendor\GLM\simd\integer.h" />
+    <ClInclude Include="vendor\GLM\simd\matrix.h" />
+    <ClInclude Include="vendor\GLM\simd\neon.h" />
+    <ClInclude Include="vendor\GLM\simd\packing.h" />
+    <ClInclude Include="vendor\GLM\simd\platform.h" />
+    <ClInclude Include="vendor\GLM\simd\trigonometric.h" />
+    <ClInclude Include="vendor\GLM\simd\vector_relational.h" />
+    <ClInclude Include="vendor\GLM\trigonometric.hpp" />
+    <ClInclude Include="vendor\GLM\vec2.hpp" />
+    <ClInclude Include="vendor\GLM\vec3.hpp" />
+    <ClInclude Include="vendor\GLM\vec4.hpp" />
+    <ClInclude Include="vendor\GLM\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragment_shader.txt" />
     <None Include="shaders\vertex_shader.txt" />
+    <None Include="vendor\GLFW\lib\glfw3.dll" />
+    <None Include="vendor\GLM\detail\func_common.inl" />
+    <None Include="vendor\GLM\detail\func_common_simd.inl" />
+    <None Include="vendor\GLM\detail\func_exponential.inl" />
+    <None Include="vendor\GLM\detail\func_exponential_simd.inl" />
+    <None Include="vendor\GLM\detail\func_geometric.inl" />
+    <None Include="vendor\GLM\detail\func_geometric_simd.inl" />
+    <None Include="vendor\GLM\detail\func_integer.inl" />
+    <None Include="vendor\GLM\detail\func_integer_simd.inl" />
+    <None Include="vendor\GLM\detail\func_matrix.inl" />
+    <None Include="vendor\GLM\detail\func_matrix_simd.inl" />
+    <None Include="vendor\GLM\detail\func_packing.inl" />
+    <None Include="vendor\GLM\detail\func_packing_simd.inl" />
+    <None Include="vendor\GLM\detail\func_trigonometric.inl" />
+    <None Include="vendor\GLM\detail\func_trigonometric_simd.inl" />
+    <None Include="vendor\GLM\detail\func_vector_relational.inl" />
+    <None Include="vendor\GLM\detail\func_vector_relational_simd.inl" />
+    <None Include="vendor\GLM\detail\type_half.inl" />
+    <None Include="vendor\GLM\detail\type_mat2x2.inl" />
+    <None Include="vendor\GLM\detail\type_mat2x3.inl" />
+    <None Include="vendor\GLM\detail\type_mat2x4.inl" />
+    <None Include="vendor\GLM\detail\type_mat3x2.inl" />
+    <None Include="vendor\GLM\detail\type_mat3x3.inl" />
+    <None Include="vendor\GLM\detail\type_mat3x4.inl" />
+    <None Include="vendor\GLM\detail\type_mat4x2.inl" />
+    <None Include="vendor\GLM\detail\type_mat4x3.inl" />
+    <None Include="vendor\GLM\detail\type_mat4x4.inl" />
+    <None Include="vendor\GLM\detail\type_mat4x4_simd.inl" />
+    <None Include="vendor\GLM\detail\type_quat.inl" />
+    <None Include="vendor\GLM\detail\type_quat_simd.inl" />
+    <None Include="vendor\GLM\detail\type_vec1.inl" />
+    <None Include="vendor\GLM\detail\type_vec2.inl" />
+    <None Include="vendor\GLM\detail\type_vec3.inl" />
+    <None Include="vendor\GLM\detail\type_vec4.inl" />
+    <None Include="vendor\GLM\detail\type_vec4_simd.inl" />
+    <None Include="vendor\GLM\ext\matrix_clip_space.inl" />
+    <None Include="vendor\GLM\ext\matrix_common.inl" />
+    <None Include="vendor\GLM\ext\matrix_projection.inl" />
+    <None Include="vendor\GLM\ext\matrix_relational.inl" />
+    <None Include="vendor\GLM\ext\matrix_transform.inl" />
+    <None Include="vendor\GLM\ext\quaternion_common.inl" />
+    <None Include="vendor\GLM\ext\quaternion_common_simd.inl" />
+    <None Include="vendor\GLM\ext\quaternion_exponential.inl" />
+    <None Include="vendor\GLM\ext\quaternion_geometric.inl" />
+    <None Include="vendor\GLM\ext\quaternion_relational.inl" />
+    <None Include="vendor\GLM\ext\quaternion_transform.inl" />
+    <None Include="vendor\GLM\ext\quaternion_trigonometric.inl" />
+    <None Include="vendor\GLM\ext\scalar_common.inl" />
+    <None Include="vendor\GLM\ext\scalar_constants.inl" />
+    <None Include="vendor\GLM\ext\scalar_integer.inl" />
+    <None Include="vendor\GLM\ext\scalar_packing.inl" />
+    <None Include="vendor\GLM\ext\scalar_relational.inl" />
+    <None Include="vendor\GLM\ext\scalar_ulp.inl" />
+    <None Include="vendor\GLM\ext\vector_common.inl" />
+    <None Include="vendor\GLM\ext\vector_integer.inl" />
+    <None Include="vendor\GLM\ext\vector_packing.inl" />
+    <None Include="vendor\GLM\ext\vector_relational.inl" />
+    <None Include="vendor\GLM\ext\vector_ulp.inl" />
+    <None Include="vendor\GLM\gtc\bitfield.inl" />
+    <None Include="vendor\GLM\gtc\color_space.inl" />
+    <None Include="vendor\GLM\gtc\constants.inl" />
+    <None Include="vendor\GLM\gtc\epsilon.inl" />
+    <None Include="vendor\GLM\gtc\integer.inl" />
+    <None Include="vendor\GLM\gtc\matrix_access.inl" />
+    <None Include="vendor\GLM\gtc\matrix_inverse.inl" />
+    <None Include="vendor\GLM\gtc\matrix_transform.inl" />
+    <None Include="vendor\GLM\gtc\noise.inl" />
+    <None Include="vendor\GLM\gtc\packing.inl" />
+    <None Include="vendor\GLM\gtc\quaternion.inl" />
+    <None Include="vendor\GLM\gtc\quaternion_simd.inl" />
+    <None Include="vendor\GLM\gtc\random.inl" />
+    <None Include="vendor\GLM\gtc\reciprocal.inl" />
+    <None Include="vendor\GLM\gtc\round.inl" />
+    <None Include="vendor\GLM\gtc\type_precision.inl" />
+    <None Include="vendor\GLM\gtc\type_ptr.inl" />
+    <None Include="vendor\GLM\gtc\ulp.inl" />
+    <None Include="vendor\GLM\gtx\associated_min_max.inl" />
+    <None Include="vendor\GLM\gtx\bit.inl" />
+    <None Include="vendor\GLM\gtx\closest_point.inl" />
+    <None Include="vendor\GLM\gtx\color_encoding.inl" />
+    <None Include="vendor\GLM\gtx\color_space.inl" />
+    <None Include="vendor\GLM\gtx\color_space_YCoCg.inl" />
+    <None Include="vendor\GLM\gtx\common.inl" />
+    <None Include="vendor\GLM\gtx\compatibility.inl" />
+    <None Include="vendor\GLM\gtx\component_wise.inl" />
+    <None Include="vendor\GLM\gtx\dual_quaternion.inl" />
+    <None Include="vendor\GLM\gtx\easing.inl" />
+    <None Include="vendor\GLM\gtx\euler_angles.inl" />
+    <None Include="vendor\GLM\gtx\extend.inl" />
+    <None Include="vendor\GLM\gtx\extended_min_max.inl" />
+    <None Include="vendor\GLM\gtx\exterior_product.inl" />
+    <None Include="vendor\GLM\gtx\fast_exponential.inl" />
+    <None Include="vendor\GLM\gtx\fast_square_root.inl" />
+    <None Include="vendor\GLM\gtx\fast_trigonometry.inl" />
+    <None Include="vendor\GLM\gtx\float_notmalize.inl" />
+    <None Include="vendor\GLM\gtx\functions.inl" />
+    <None Include="vendor\GLM\gtx\gradient_paint.inl" />
+    <None Include="vendor\GLM\gtx\handed_coordinate_space.inl" />
+    <None Include="vendor\GLM\gtx\hash.inl" />
+    <None Include="vendor\GLM\gtx\integer.inl" />
+    <None Include="vendor\GLM\gtx\intersect.inl" />
+    <None Include="vendor\GLM\gtx\io.inl" />
+    <None Include="vendor\GLM\gtx\log_base.inl" />
+    <None Include="vendor\GLM\gtx\matrix_cross_product.inl" />
+    <None Include="vendor\GLM\gtx\matrix_decompose.inl" />
+    <None Include="vendor\GLM\gtx\matrix_factorisation.inl" />
+    <None Include="vendor\GLM\gtx\matrix_interpolation.inl" />
+    <None Include="vendor\GLM\gtx\matrix_major_storage.inl" />
+    <None Include="vendor\GLM\gtx\matrix_operation.inl" />
+    <None Include="vendor\GLM\gtx\matrix_query.inl" />
+    <None Include="vendor\GLM\gtx\matrix_transform_2d.inl" />
+    <None Include="vendor\GLM\gtx\mixed_product.inl" />
+    <None Include="vendor\GLM\gtx\norm.inl" />
+    <None Include="vendor\GLM\gtx\normal.inl" />
+    <None Include="vendor\GLM\gtx\normalize_dot.inl" />
+    <None Include="vendor\GLM\gtx\number_precision.inl" />
+    <None Include="vendor\GLM\gtx\optimum_pow.inl" />
+    <None Include="vendor\GLM\gtx\orthonormalize.inl" />
+    <None Include="vendor\GLM\gtx\perpendicular.inl" />
+    <None Include="vendor\GLM\gtx\polar_coordinates.inl" />
+    <None Include="vendor\GLM\gtx\projection.inl" />
+    <None Include="vendor\GLM\gtx\quaternion.inl" />
+    <None Include="vendor\GLM\gtx\raw_data.inl" />
+    <None Include="vendor\GLM\gtx\rotate_normalized_axis.inl" />
+    <None Include="vendor\GLM\gtx\rotate_vector.inl" />
+    <None Include="vendor\GLM\gtx\scalar_relational.inl" />
+    <None Include="vendor\GLM\gtx\spline.inl" />
+    <None Include="vendor\GLM\gtx\std_based_type.inl" />
+    <None Include="vendor\GLM\gtx\string_cast.inl" />
+    <None Include="vendor\GLM\gtx\texture.inl" />
+    <None Include="vendor\GLM\gtx\transform.inl" />
+    <None Include="vendor\GLM\gtx\transform2.inl" />
+    <None Include="vendor\GLM\gtx\type_aligned.inl" />
+    <None Include="vendor\GLM\gtx\type_trait.inl" />
+    <None Include="vendor\GLM\gtx\vector_angle.inl" />
+    <None Include="vendor\GLM\gtx\vector_query.inl" />
+    <None Include="vendor\GLM\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\awesomeface.png" />
     <Image Include="textures\container.jpg" />
     <Image Include="textures\wall.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="vendor\GLEW\lib\glew32s.lib" />
+    <Library Include="vendor\GLFW\lib\glfw3.lib" />
+    <Library Include="vendor\GLFW\lib\glfw3dll.lib" />
+    <Library Include="vendor\GLFW\lib\glfw3_mt.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
