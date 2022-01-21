@@ -17,6 +17,8 @@ void processInput(GLFWwindow* window);
 
 float opacity = 0.0f;
 float rotation = 0.0f;
+float vertical = 0.0f;
+float lateral = 0.0f;
 
 int main(void)
 {
@@ -192,7 +194,8 @@ int main(void)
         // rotating texture
         // create transformations
         glm::mat4 trans = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        trans = glm::rotate(trans, glm::radians(rotation), glm::vec3(0.0, 0.0, 1.0));
+        trans = glm::translate(trans, glm::vec3(lateral, vertical, 0.0f)); // translation
+        trans = glm::rotate(trans, glm::radians(rotation), glm::vec3(0.0, 0.0, 1.0)); // rotating around x, y or z axis
 
         // get matrix's uniform location and set matrix
         ourShader.use();
@@ -250,6 +253,30 @@ void processInput(GLFWwindow* window)
         rotation -= 1.0f;
         if (rotation < 0.0f)
             rotation = 360.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        lateral += 0.01f;
+        if (lateral > 1.0f)
+            lateral = 1.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        lateral -= 0.01f;
+        if (lateral < -1.0f)
+            lateral = -1.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        vertical += 0.01f;
+        if (vertical > 1.0f)
+            vertical = 1.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        vertical -= 0.01f;
+        if (vertical < -1.0f)
+            vertical = -1.0f;
     }
 }
 
