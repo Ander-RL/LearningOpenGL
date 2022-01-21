@@ -19,6 +19,7 @@ float opacity = 0.0f;
 float rotation = 0.0f;
 float vertical = 0.0f;
 float lateral = 0.0f;
+float scale = 1.0f;
 
 int main(void)
 {
@@ -195,6 +196,7 @@ int main(void)
         // create transformations
         glm::mat4 trans = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         trans = glm::translate(trans, glm::vec3(lateral, vertical, 0.0f)); // translation
+        trans = glm::scale(trans, glm::vec3(scale, scale, scale));
         trans = glm::rotate(trans, glm::radians(rotation), glm::vec3(0.0, 0.0, 1.0)); // rotating around x, y or z axis
 
         // get matrix's uniform location and set matrix
@@ -277,6 +279,18 @@ void processInput(GLFWwindow* window)
         vertical -= 0.01f;
         if (vertical < -1.0f)
             vertical = -1.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+        scale += 0.01f;
+        if (scale > 1.0f)
+            scale = 1.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+        scale -= 0.01f;
+        if (scale < 0.0f)
+            scale = 0.0f;
     }
 }
 
