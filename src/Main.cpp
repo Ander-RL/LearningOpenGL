@@ -20,6 +20,10 @@ float rotation = 0.0f;
 float vertical = 0.0f;
 float lateral = 0.0f;
 float scale = 1.0f;
+float translate = -3.0f;
+float perspective = 45.0f;
+int screenWidth = 1280;
+int screenHeight = 720;
 
 int main(void)
 {
@@ -34,7 +38,7 @@ int main(void)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(1080, 720, "Pruebas OpenGL", NULL, NULL);
+	window = glfwCreateWindow(screenWidth, screenHeight, "Pruebas OpenGL", NULL, NULL);
 	if (!window)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -191,18 +195,21 @@ int main(void)
         // set the texture opacity value in the shader
         ourShader.setFloat("opacity", opacity);
 
-
-        // rotating texture
         // create transformations
-        glm::mat4 trans = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        trans = glm::translate(trans, glm::vec3(lateral, vertical, 0.0f)); // translation
-        trans = glm::scale(trans, glm::vec3(scale, scale, scale));
-        trans = glm::rotate(trans, glm::radians(rotation), glm::vec3(0.0, 0.0, 1.0)); // rotating around x, y or z axis
-
-        // get matrix's uniform location and set matrix
-        ourShader.use();
-        unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+        glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        glm::mat4 view = glm::mat4(1.0f);
+        glm::mat4 projection = glm::mat4(1.0f);
+        model = glm::rotate(model, glm::radians(rotation), glm::vec3(1.0f, 0.0f, 0.0f));
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, translate));
+        projection = glm::perspective(glm::radians(perspective), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
+        // retrieve the matrix uniform locations
+        unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
+        unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "view");
+        // pass them to the shaders (3 different ways)
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+        // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+        ourShader.setMat4("projection", projection);
 
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -291,6 +298,42 @@ void processInput(GLFWwindow* window)
         scale -= 0.01f;
         if (scale < 0.0f)
             scale = 0.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+        scale += 0.01f;
+        if (scale > 1.0f)
+            scale = 1.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+        scale -= 0.01f;
+        if (scale < 0.0f)
+            scale = 0.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
+        translate += 0.1f;
+        if (translate > 10.0f)
+            translate = 10.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
+        translate -= 0.1f;
+        if (translate < -100.0f)
+            translate = -100.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) {
+        perspective += 1.0f;
+        if (perspective > 360.0f)
+            perspective = 360.0f;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) {
+        perspective -= 1.0f;
+        if (perspective < 0.0f)
+            perspective = 0.0f;
     }
 }
 
