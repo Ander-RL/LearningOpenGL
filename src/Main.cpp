@@ -26,7 +26,7 @@ float perspective = 45.0f;
 // settings
 const int screenWidth = 1280;
 const int screenHeight = 720; 
-const float cameraSpeed = 0.1f;
+const float cameraSpeed = 0.05f;
 
 // camera
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);      // position of the camera
@@ -245,7 +245,7 @@ int main(void)
         glm::mat4 projection = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(translate, 0.0f, -4.0f));
         model = glm::rotate(model, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
         projection = glm::perspective(glm::radians(perspective), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
         
         // retrieve the matrix uniform locations
@@ -324,11 +324,11 @@ void processInput(GLFWwindow* window)
     }
 
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        cameraPos += glm::normalize(glm::cross(cameraUp, cameraFront)) * cameraSpeed;
+        cameraPos -= glm::normalize(glm::cross(cameraUp, cameraFront)) * cameraSpeed;
     }
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        cameraPos -= glm::normalize(glm::cross(cameraUp, cameraFront)) * cameraSpeed;
+        cameraPos += glm::normalize(glm::cross(cameraUp, cameraFront)) * cameraSpeed;
     }
 
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
