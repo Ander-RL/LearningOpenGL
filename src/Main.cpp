@@ -20,7 +20,7 @@ float rotation = 0.0f;
 float vertical = 0.0f;
 float lateral = 0.0f;
 float scale = 1.0f;
-float translate = -3.0f;
+float translate = 0.0f;
 float perspective = 45.0f;
 int screenWidth = 1280;
 int screenHeight = 720;
@@ -230,8 +230,9 @@ int main(void)
         glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         glm::mat4 view = glm::mat4(1.0f);
         glm::mat4 projection = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.5f, 1.0f, 1.0f));
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, translate));
+        model = glm::translate(model, glm::vec3(translate, 0.0f, -4.0f));
+        model = glm::rotate(model, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
         projection = glm::perspective(glm::radians(perspective), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
         
         // retrieve the matrix uniform locations
@@ -241,11 +242,16 @@ int main(void)
         // pass them to the shaders (3 different ways)
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
-        
-        // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-        ourShader.setMat4("projection", projection);
+        ourShader.setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // another cube
+        glm::mat4 model2 = glm::mat4(1.0f);
+        model2 = glm::translate(model2, glm::vec3(-2.5f, 0.0f, -4.0f));
+        model2 = glm::rotate(model2, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
+        ourShader.setMat4("model", model2);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
