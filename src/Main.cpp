@@ -19,11 +19,19 @@ float opacity = 0.0f;
 float rotation = 0.0f;
 float vertical = 0.0f;
 float lateral = 0.0f;
-float scale = 1.0f;
+float advance = 3.0f;
 float translate = 0.0f;
 float perspective = 45.0f;
-int screenWidth = 1280;
-int screenHeight = 720;
+
+// settings
+const int screenWidth = 1280;
+const int screenHeight = 720; 
+const float cameraSpeed = 0.1f;
+
+// camera
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);      // position of the camera
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -6.0f);   // where/coordinates is looking at
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);       // up vector so it can calculate other axis
 
 int main(void)
 {
@@ -228,7 +236,12 @@ int main(void)
 
         // create transformations
         glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        glm::mat4 view = glm::mat4(1.0f);
+
+        glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+
+/*        glm::mat4 view = glm::lookAt(glm::vec3(lateral, vertical, advance),  
+  		                             glm::vec3(lateral, vertical, advance - 6.0f),    
+  		                             glm::vec3(0.0f, 1.0f, 0.0f));*/   
         glm::mat4 projection = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(translate, 0.0f, -4.0f));
         model = glm::rotate(model, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -247,11 +260,18 @@ int main(void)
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // another cube
+        // cube2
         glm::mat4 model2 = glm::mat4(1.0f);
         model2 = glm::translate(model2, glm::vec3(-2.5f, 0.0f, -4.0f));
         model2 = glm::rotate(model2, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
         ourShader.setMat4("model", model2);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // cube3
+        glm::mat4 model3 = glm::mat4(1.0f);
+        model3 = glm::translate(model3, glm::vec3(2.5f, 0.0f, -4.0f));
+        model3 = glm::rotate(model3, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
+        ourShader.setMat4("model", model3);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -304,51 +324,27 @@ void processInput(GLFWwindow* window)
     }
 
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        lateral += 0.01f;
-        if (lateral > 1.0f)
-            lateral = 1.0f;
+        cameraPos += glm::normalize(glm::cross(cameraUp, cameraFront)) * cameraSpeed;
     }
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        lateral -= 0.01f;
-        if (lateral < -1.0f)
-            lateral = -1.0f;
+        cameraPos -= glm::normalize(glm::cross(cameraUp, cameraFront)) * cameraSpeed;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+        cameraPos += cameraSpeed * cameraUp;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+        cameraPos -= cameraSpeed * cameraUp;
     }
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        vertical += 0.01f;
-        if (vertical > 1.0f)
-            vertical = 1.0f;
+        cameraPos += cameraSpeed * cameraFront;
     }
 
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        vertical -= 0.01f;
-        if (vertical < -1.0f)
-            vertical = -1.0f;
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-        scale += 0.01f;
-        if (scale > 1.0f)
-            scale = 1.0f;
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        scale -= 0.01f;
-        if (scale < 0.0f)
-            scale = 0.0f;
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-        scale += 0.01f;
-        if (scale > 1.0f)
-            scale = 1.0f;
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        scale -= 0.01f;
-        if (scale < 0.0f)
-            scale = 0.0f;
+        cameraPos -= cameraSpeed * cameraFront;
     }
 
     if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
