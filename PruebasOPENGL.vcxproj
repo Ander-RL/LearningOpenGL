@@ -609,6 +609,12 @@
     <Library Include="vendor\GLFW\lib\glfw3dll.lib" />
     <Library Include="vendor\GLFW\lib\glfw3_mt.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="shaders\fragment_shader_light.txt" />
+    <Text Include="shaders\fragment_shader_light_source.txt" />
+    <Text Include="shaders\vertex_shader_light.txt" />
+    <Text Include="shaders\vertex_shader_light_source.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

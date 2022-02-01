@@ -20,11 +20,7 @@ void processInput(GLFWwindow* window);
 
 float opacity = 0.0f;
 float rotation = 0.0f;
-//float vertical = 0.0f;
-//float lateral = 0.0f;
-//float advance = 3.0f;
 float translate = 0.0f;
-float fov = 45.0f;
 
 // settings
 const int screenWidth = 1280;
@@ -36,9 +32,6 @@ float lastFrame = 0.0f; // Time of last frame
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-//glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);      // position of the camera
-//glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -6.0f);   // where/coordinates is looking at
-//glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);       // up vector so it can calculate other axis
 
 bool firstMouse = true;
 float lastX = screenWidth / 2.0;
@@ -95,6 +88,8 @@ int main(void)
     // ------------------------------------
     // vertex shader
     Shader ourShader("shaders/vertex_shader.txt", "shaders/fragment_shader.txt");
+    Shader lightShader("shaders/vertex_shader_light.txt", "shaders/fragment_shader_light.txt");
+    Shader lightSourceShader("shaders/vertex_shader_light_source.txt", "shaders/fragment_shader_light_source.txt");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
@@ -169,6 +164,34 @@ int main(void)
     glBindVertexArray(0);
 
 
+    // VAO for our light cube
+    unsigned int lightVAO;
+    glGenVertexArrays(1, &lightVAO);
+    glBindVertexArray(lightVAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glBindVertexArray(0);
+
+
+    // VAO for our ligh source
+    unsigned int lightSourceVAO;
+    glGenVertexArrays(1, &lightSourceVAO);
+    glBindVertexArray(lightSourceVAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glBindVertexArray(0);
+
+
     unsigned int texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -226,10 +249,6 @@ int main(void)
     // uncomment this call to draw in wireframe polygons.
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    // activate shader so uniform can work
-    ourShader.use();
-    glUniform1i(glGetUniformLocation(ourShader.ID, "ourTexture"), 0); // set it manually
-    ourShader.setInt("ourTexture2", 1); // or with shader class
 
     // render loop
     // -----------
@@ -256,6 +275,13 @@ int main(void)
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
 
+        // active 3 cube with texture shader program so it can be rendered
+        ourShader.use();
+
+        // shader uniforms
+        glUniform1i(glGetUniformLocation(ourShader.ID, "ourTexture"), 0); // set it manually
+        ourShader.setInt("ourTexture2", 1); // or with shader class
+
         // set the texture opacity value in the shader
         ourShader.setFloat("opacity", opacity);
 
@@ -274,9 +300,8 @@ int main(void)
         ourShader.setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 
         glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        // create transformations
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        
         // cube1
         glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         model = glm::translate(model, glm::vec3(translate, 0.0f, -4.0f));
@@ -297,6 +322,41 @@ int main(void)
         model3 = glm::rotate(model3, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
         ourShader.setMat4("model", model3);
         glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // activate ligh color cube shader program so it can be rendered
+        lightShader.use();
+
+        // light shader uniforms
+        lightShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+        lightShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+
+        glBindVertexArray(lightVAO);
+
+        // create transformations
+        // light color cube
+        glm::mat4 lightModel = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        lightModel = glm::translate(lightModel, glm::vec3(0.0f, 1.5f, -4.0f));
+        lightModel = glm::rotate(lightModel, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
+        lightShader.setMat4("model", lightModel);
+        lightShader.setMat4("view", view);
+        lightShader.setMat4("projection", projection);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // activate ligh source cube shader program so it can be rendered
+        lightSourceShader.use();
+
+        glBindVertexArray(lightSourceVAO);
+
+        // create transformations
+        // light source cube
+        glm::mat4 lightSourceModel = glm::mat4(1.0f);
+        lightSourceModel = glm::translate(lightSourceModel, glm::vec3(-1.5f, 1.5f, -4.0f));
+        lightSourceModel = glm::scale(lightSourceModel, glm::vec3(0.2f)); // a smaller cube
+        lightSourceShader.setMat4("model", lightSourceModel);
+        lightSourceShader.setMat4("view", view);
+        lightSourceShader.setMat4("projection", projection);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

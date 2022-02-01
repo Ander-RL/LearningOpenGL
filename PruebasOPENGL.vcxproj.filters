@@ -1333,4 +1333,10 @@
     <Library Include="vendor\GLFW\lib\glfw3dll.lib" />
     <Library Include="vendor\GLEW\lib\glew32s.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="shaders\vertex_shader_light.txt" />
+    <Text Include="shaders\fragment_shader_light.txt" />
+    <Text Include="shaders\vertex_shader_light_source.txt" />
+    <Text Include="shaders\fragment_shader_light_source.txt" />
+  </ItemGroup>
 </Project>
