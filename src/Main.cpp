@@ -159,6 +159,9 @@ int main(void)
     // texture attribute
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*) (3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+    // normal attribute
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
     // note that this is allowed, the call to glVertexAttribPointer registered VBO 
     // as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
@@ -292,6 +295,10 @@ int main(void)
 
         // set the texture opacity value in the shader
         ourShader.setFloat("opacity", opacity);
+        ourShader.setFloat("ambientStrength", ambientStrength);
+
+        ourShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+        ourShader.setVec3("lightSourcePos", lightSourcePos);
         ourShader.setFloat("ambientStrength", ambientStrength);
 
         // pass projection matrix to shader (note that in this case it could change every frame)

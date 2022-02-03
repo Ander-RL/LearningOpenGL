@@ -2,14 +2,33 @@
 
 out vec4 FragColor;
 
+
+in vec3 Normal;
+in vec3 FragPos;
 in vec2 TexCoord;
 
 uniform sampler2D ourTexture;
 uniform sampler2D ourTexture2;
 uniform float opacity;
 uniform float ambientStrength;
+uniform vec3 lightSourcePos;
+uniform vec3 lightColor;
 
 void main()
 {
-   FragColor = mix(texture(ourTexture, TexCoord), texture(ourTexture2, TexCoord), opacity) * ambientStrength;
+	// texture mix
+	vec4 textureMix = mix(texture(ourTexture, TexCoord), texture(ourTexture2, TexCoord), opacity);
+
+	// ambient
+	vec4 ambient = vec4(ambientStrength * lightColor, 1.0);
+
+	// diffuse
+	vec3 norm = normalize(Normal);
+	vec3 lightDir = normalize(lightSourcePos - FragPos);
+	float diff = max(dot(norm, lightDir), 0.0);
+	vec4 diffuse = vec4(diff * lightColor, 1.0);
+
+	vec4 result = (ambient + diffuse) * textureMix;
+
+    FragColor = textureMix * result;
 };
