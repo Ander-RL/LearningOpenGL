@@ -21,7 +21,7 @@ void processInput(GLFWwindow* window);
 float opacity = 0.0f;
 float rotation = 0.0f;
 float translate = 0.0f;
-float ambientStrength = 1.0f;
+float ambientStrength = 0.1f;
 
 // settings
 const int screenWidth = 1280;
@@ -39,7 +39,7 @@ float lastX = screenWidth / 2.0;
 float lastY = screenHeight / 2.0;
 
 // light cube
-glm::vec3 lightSourcePos(-1.5f, 1.5f, -4.0f);
+glm::vec3 lightSourcePos(-1.5f, 1.5f, -5.0f);
 
 
 
@@ -274,7 +274,7 @@ int main(void)
 
         // render
         // ------
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // background color
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f); // background color
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clears color and depth buffer
 
         // bind Texture
@@ -341,22 +341,20 @@ int main(void)
         lightShader.setVec3("lightSourcePos", lightSourcePos);
         lightShader.setFloat("ambientStrength", ambientStrength);
 
-        glBindVertexArray(lightVAO);
-
         // create transformations
         // light color cube
-        glm::mat4 lightModel = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        glm::mat4 lightModel = glm::mat4(1.0f);
         lightModel = glm::translate(lightModel, glm::vec3(0.0f, 1.5f, -4.0f));
         lightModel = glm::rotate(lightModel, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
         lightShader.setMat4("model", lightModel);
         lightShader.setMat4("view", view);
         lightShader.setMat4("projection", projection);
+
+        glBindVertexArray(lightVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // activate ligh source cube shader program so it can be rendered
         lightSourceShader.use();
-
-        glBindVertexArray(lightSourceVAO);
 
         // create transformations
         // light source cube
@@ -366,6 +364,8 @@ int main(void)
         lightSourceShader.setMat4("model", lightSourceModel);
         lightSourceShader.setMat4("view", view);
         lightSourceShader.setMat4("projection", projection);
+
+        glBindVertexArray(lightSourceVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
@@ -380,6 +380,8 @@ int main(void)
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteProgram(ourShader.ID);
+    glDeleteProgram(lightShader.ID);
+    glDeleteProgram(lightSourceShader.ID);
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
