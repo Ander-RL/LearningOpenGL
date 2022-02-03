@@ -7,8 +7,9 @@ in vec2 TexCoord;
 uniform sampler2D ourTexture;
 uniform sampler2D ourTexture2;
 uniform float opacity;
+uniform float ambientStrength;
 
 void main()
 {
-   FragColor = mix(texture(ourTexture, TexCoord), texture(ourTexture2, TexCoord), opacity);
+   FragColor = mix(texture(ourTexture, TexCoord), texture(ourTexture2, TexCoord), opacity) * ambientStrength;
 };
