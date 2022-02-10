@@ -300,6 +300,7 @@ int main(void)
         ourShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
         ourShader.setVec3("lightSourcePos", lightSourcePos);
         ourShader.setFloat("ambientStrength", ambientStrength);
+        ourShader.setVec3("viewPos", camera.Position);
 
         // pass projection matrix to shader (note that in this case it could change every frame)
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
@@ -347,6 +348,7 @@ int main(void)
         lightShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
         lightShader.setVec3("lightSourcePos", lightSourcePos);
         lightShader.setFloat("ambientStrength", ambientStrength);
+        lightShader.setVec3("viewPos", camera.Position);
 
         // create transformations
         // light color cube

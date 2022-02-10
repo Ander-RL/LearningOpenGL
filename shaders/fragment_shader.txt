@@ -13,6 +13,7 @@ uniform float opacity;
 uniform float ambientStrength;
 uniform vec3 lightSourcePos;
 uniform vec3 lightColor;
+uniform vec3 viewPos; 
 
 void main()
 {
@@ -28,7 +29,14 @@ void main()
 	float diff = max(dot(norm, lightDir), 0.0);
 	vec4 diffuse = vec4(diff * lightColor, 1.0);
 
-	vec4 result = (ambient + diffuse) * textureMix;
+    // specular
+    float specularStrength = 0.5;
+    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 reflectDir = reflect(-lightDir, norm);  
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    vec4 specular = vec4(specularStrength * spec * lightColor, 1.0); 
+	
+    vec4 result = (ambient + diffuse + specular) * textureMix;
 
-    FragColor = textureMix * result;
+	FragColor = result;
 };
