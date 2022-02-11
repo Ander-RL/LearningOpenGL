@@ -1,5 +1,20 @@
 #version 330 core
 
+struct Material {
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;    
+    float shininess;
+}; 
+
+struct Light {
+    vec3 position;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+
 out vec4 FragColor;
 
 
@@ -10,10 +25,9 @@ in vec2 TexCoord;
 uniform sampler2D ourTexture;
 uniform sampler2D ourTexture2;
 uniform float opacity;
-uniform float ambientStrength;
-uniform vec3 lightSourcePos;
-uniform vec3 lightColor;
 uniform vec3 viewPos; 
+uniform Material material;
+uniform Light light; 
 
 void main()
 {
@@ -21,22 +35,21 @@ void main()
 	vec4 textureMix = mix(texture(ourTexture, TexCoord), texture(ourTexture2, TexCoord), opacity);
 
 	// ambient
-	vec4 ambient = vec4(ambientStrength * lightColor, 1.0);
+	vec4 ambient = vec4(light.ambient, 1.0) * textureMix;
 
 	// diffuse
 	vec3 norm = normalize(Normal);
-	vec3 lightDir = normalize(lightSourcePos - FragPos);
+	vec3 lightDir = normalize(light.position - FragPos);
 	float diff = max(dot(norm, lightDir), 0.0);
-	vec4 diffuse = vec4(diff * lightColor, 1.0);
+	vec4 diffuse = vec4(light.diffuse * diff, 1.0) * textureMix;
 
     // specular
-    float specularStrength = 0.5;
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);  
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-    vec4 specular = vec4(specularStrength * spec * lightColor, 1.0); 
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec4 specular = vec4(light.specular * spec, 1.0) * textureMix;
 	
-    vec4 result = (ambient + diffuse + specular) * textureMix;
+    vec4 result = ambient + diffuse + specular;
 
 	FragColor = result;
 };

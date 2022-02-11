@@ -295,11 +295,12 @@ int main(void)
 
         // set the texture opacity value in the shader
         ourShader.setFloat("opacity", opacity);
-        ourShader.setFloat("ambientStrength", ambientStrength);
 
-        ourShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-        ourShader.setVec3("lightSourcePos", lightSourcePos);
-        ourShader.setFloat("ambientStrength", ambientStrength);
+        ourShader.setVec3("light.ambient", glm::vec3(1.0) * ambientStrength);
+        ourShader.setVec3("light.diffuse", 1.0f, 1.0f, 1.0f);
+        ourShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+        ourShader.setVec3("light.position", lightSourcePos);
+        ourShader.setFloat("material.shininess", 32);
         ourShader.setVec3("viewPos", camera.Position);
 
         // pass projection matrix to shader (note that in this case it could change every frame)
