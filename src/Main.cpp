@@ -344,10 +344,14 @@ int main(void)
         lightShader.use();
 
         // light shader uniforms
-        lightShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-        lightShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-        lightShader.setVec3("lightSourcePos", lightSourcePos);
-        lightShader.setFloat("ambientStrength", ambientStrength);
+        lightShader.setVec3("light.ambient", glm::vec3(1.0) * ambientStrength);
+        lightShader.setVec3("light.diffuse", 1.0f, 1.0f, 1.0f);
+        lightShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+        lightShader.setVec3("light.position", lightSourcePos);
+        lightShader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+        lightShader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+        lightShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+        lightShader.setFloat("material.shininess", 32);
         lightShader.setVec3("viewPos", camera.Position);
 
         // create transformations
