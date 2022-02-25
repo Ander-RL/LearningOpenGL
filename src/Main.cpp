@@ -17,6 +17,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
+unsigned int loadTexture(const char* path);
 
 float opacity = 0.0f;
 float rotation = 0.0f;
@@ -201,60 +202,16 @@ int main(void)
     glEnableVertexAttribArray(0);
 
     glBindVertexArray(0);
-
-
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    // set the texture wrapping/filtering options (on the currently bound texture object)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
-    // load and generate the texture
-    int width, height, nrChannels;
-    unsigned char* data = stbi_load("textures/container.jpg", &width, &height, &nrChannels, 0);
 
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
+    // load textures (we now use a utility function to keep the code more organized)
+    // -----------------------------------------------------------------------------
+    unsigned int diffuseMap = loadTexture("textures/container.png");
 
-
-    // second texture
-    unsigned int texture2;
-    glGenTextures(1, &texture2);
-    glBindTexture(GL_TEXTURE_2D, texture2);
-    // set the texture wrapping options (on the currently bound texture object)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set the texture filtering options (on the currently bound texture object)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // tell stb_image.h to flip loaded texture's on the y-axis.
-    stbi_set_flip_vertically_on_load(true); 
-
-    // load and generate the texture
-    data = stbi_load("textures/awesomeface.png", &width, &height, &nrChannels, 0);
-
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        std::cout << "Failed to load texture2" << std::endl;
-    }
-    stbi_image_free(data);
+    // shader configuration
+    // --------------------
+    ourShader.use();
+    ourShader.setInt("material.diffuse", 0);
 
 
     // uncomment this call to draw in wireframe polygons.
@@ -280,27 +237,19 @@ int main(void)
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f); // background color
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clears color and depth buffer
 
-        // bind Texture
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture2);
-
         // active 3 cube with texture shader program so it can be rendered
         ourShader.use();
 
-        // shader uniforms
-        glUniform1i(glGetUniformLocation(ourShader.ID, "ourTexture"), 0); // set it manually
-        ourShader.setInt("ourTexture2", 1); // or with shader class
-
-        // set the texture opacity value in the shader
-        ourShader.setFloat("opacity", opacity);
-
+        // light properties
         ourShader.setVec3("light.ambient", glm::vec3(1.0) * ambientStrength);
         ourShader.setVec3("light.diffuse", 1.0f, 1.0f, 1.0f);
         ourShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+        // material properties
         ourShader.setVec3("light.position", lightSourcePos);
         ourShader.setFloat("material.shininess", 32);
+
+        // view/projection transformations
         ourShader.setVec3("viewPos", camera.Position);
 
         // pass projection matrix to shader (note that in this case it could change every frame)
@@ -325,20 +274,6 @@ int main(void)
         model = glm::translate(model, glm::vec3(translate, 0.0f, -4.0f));
         model = glm::rotate(model, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
         glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // another way
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        // cube2
-        glm::mat4 model2 = glm::mat4(1.0f);
-        model2 = glm::translate(model2, glm::vec3(-2.5f, 0.0f, -4.0f));
-        model2 = glm::rotate(model2, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
-        ourShader.setMat4("model", model2);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        // cube3
-        glm::mat4 model3 = glm::mat4(1.0f);
-        model3 = glm::translate(model3, glm::vec3(2.5f, 0.0f, -4.0f));
-        model3 = glm::rotate(model3, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
-        ourShader.setMat4("model", model3);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // activate light color cube shader program so it can be rendered
@@ -522,6 +457,45 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.ProcessMouseScroll(static_cast<float>(yoffset));
+}
+
+// utility function for loading a 2D texture from file
+// ---------------------------------------------------
+unsigned int loadTexture(char const* path)
+{
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+
+    int width, height, nrComponents;
+    unsigned char* data = stbi_load(path, &width, &height, &nrComponents, 0);
+    if (data)
+    {
+        GLenum format;
+        if (nrComponents == 1)
+            format = GL_RED;
+        else if (nrComponents == 3)
+            format = GL_RGB;
+        else if (nrComponents == 4)
+            format = GL_RGBA;
+
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        stbi_image_free(data);
+    }
+    else
+    {
+        std::cout << "Texture failed to load at path: " << path << std::endl;
+        stbi_image_free(data);
+    }
+
+    return textureID;
 }
 
 
