@@ -602,6 +602,9 @@
   <ItemGroup>
     <Image Include="textures\awesomeface.png" />
     <Image Include="textures\container.jpg" />
+    <Image Include="textures\container.png" />
+    <Image Include="textures\container_old.jpg" />
+    <Image Include="textures\container_specular.png" />
     <Image Include="textures\wall.jpg" />
   </ItemGroup>
   <ItemGroup>

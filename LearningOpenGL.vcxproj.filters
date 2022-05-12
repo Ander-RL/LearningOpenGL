@@ -1326,6 +1326,15 @@
     <Image Include="textures\awesomeface.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="textures\container.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\container_old.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="textures\container_specular.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Library Include="vendor\GLFW\lib\glfw3.lib" />

@@ -173,23 +173,6 @@ int main(void)
     glBindVertexArray(0);
 
 
-    // VAO for our light cube
-    unsigned int lightVAO;
-    glGenVertexArrays(1, &lightVAO);
-    glBindVertexArray(lightVAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // normal attribute
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-
-    glBindVertexArray(0);
-
-
     // VAO for our ligh source
     unsigned int lightSourceVAO;
     glGenVertexArrays(1, &lightSourceVAO);
@@ -207,11 +190,13 @@ int main(void)
     // load textures (we now use a utility function to keep the code more organized)
     // -----------------------------------------------------------------------------
     unsigned int diffuseMap = loadTexture("textures/container.png");
+    unsigned int specularMap = loadTexture("textures/container_specular.png");
 
     // shader configuration
     // --------------------
     ourShader.use();
     ourShader.setInt("material.diffuse", 0);
+    ourShader.setInt("material.specular", 1);
 
 
     // uncomment this call to draw in wireframe polygons.
@@ -247,7 +232,7 @@ int main(void)
 
         // material properties
         ourShader.setVec3("light.position", lightSourcePos);
-        ourShader.setFloat("material.shininess", 32);
+        ourShader.setFloat("material.shininess", 64);
 
         // view/projection transformations
         ourShader.setVec3("viewPos", camera.Position);
@@ -256,50 +241,37 @@ int main(void)
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
 
         // camera/view transformation
-        glm::mat4 view = camera.GetViewMatrix();
+        glm::mat4 view = camera.GetViewMatrix();        
+        // world transformation
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(translate, 0.0f, -4.0f));
         
         // retrieve the matrix uniform locations
-        unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
-        unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "view");
+        //unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "model");
+        //unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "view");
         
         // pass them to the shaders
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]); // one way os doing it
+        //glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]); // one way os doing it
         ourShader.setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+        ourShader.setMat4("view", view);
+        ourShader.setMat4("model", model);
 
-        glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        // cube
+        //glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        //model = glm::translate(model, glm::vec3(translate, 0.0f, -4.0f));
+        //model = glm::rotate(model, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
+        //glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // another way
+
+        // bind diffuse map
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, diffuseMap);
         
-        // cube1
-        glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        model = glm::translate(model, glm::vec3(translate, 0.0f, -4.0f));
-        model = glm::rotate(model, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // another way
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        // bind specular map
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, specularMap);
 
-        // activate light color cube shader program so it can be rendered
-        lightShader.use();
-
-        // light shader uniforms
-        lightShader.setVec3("light.ambient", glm::vec3(1.0) * ambientStrength);
-        lightShader.setVec3("light.diffuse", 1.0f, 1.0f, 1.0f);
-        lightShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-        lightShader.setVec3("light.position", lightSourcePos);
-        lightShader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-        lightShader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-        lightShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-        lightShader.setFloat("material.shininess", 32);
-        lightShader.setVec3("viewPos", camera.Position);
-
-        // create transformations
-        // light color cube
-        glm::mat4 lightModel = glm::mat4(1.0f);
-        lightModel = glm::translate(lightModel, glm::vec3(0.0f, 1.5f, -4.0f));
-        lightModel = glm::rotate(lightModel, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f));
-        lightShader.setMat4("model", lightModel);
-        lightShader.setMat4("view", view);
-        lightShader.setMat4("projection", projection);
-
-        glBindVertexArray(lightVAO);
+        // render the cube
+        glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // activate ligh source cube shader program so it can be rendered
